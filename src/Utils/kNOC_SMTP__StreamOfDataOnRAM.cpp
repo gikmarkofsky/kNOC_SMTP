@@ -1,8 +1,8 @@
 
 
-#include "kNOC_SMTP__FileInRAMStream.hpp"
+#include "kNOC_SMTP__StreamOfDataOnRAM.hpp"
 /*
-HEADER: kNOC_SMTP__FileInRAMStream.hpp
+HEADER: kNOC_SMTP__StreamOfDataOnRAM.hpp
 ___________________________________________________________________________________________
 
 namespace kNOC_SMTP::Utils
@@ -15,7 +15,7 @@ namespace kNOC_SMTP::Utils
     };
 
     // Note: be aware, that you should move the "carriage" manually after reading/writing
-    class FileInRAMStream
+    class StreamOfDataOnRAM
     {
         //_________________________________PUBLIC__________________________________________
         public:
@@ -55,13 +55,13 @@ ________________________________________________________________________________
 */
 
 
-void kNOC_SMTP::Utils::FileInRAMStream:: PlaceCarriageToTheStart()
+void kNOC_SMTP::Utils::StreamOfDataOnRAM:: PlaceCarriageToTheStart()
 {
     this->carriage = 0;
 }
 
 
-void kNOC_SMTP::Utils::FileInRAMStream:: PlaceCarriageToTheEnd()
+void kNOC_SMTP::Utils::StreamOfDataOnRAM:: PlaceCarriageToTheEnd()
 {
     this->carriage = this->memory.size();
 }
@@ -69,7 +69,7 @@ void kNOC_SMTP::Utils::FileInRAMStream:: PlaceCarriageToTheEnd()
 //- If we try to move the carriage too much left then
 // return CARRIAGE_MOVE_STATUS::REACH_LEFT_DEAD_END
 // and place the carriage to the start
-auto kNOC_SMTP::Utils::FileInRAMStream:: MoveCarriageLeftBy(::std::uint64_t shift) -> CARRIAGE_MOVE_STATUS
+auto kNOC_SMTP::Utils::StreamOfDataOnRAM:: MoveCarriageLeftBy(::std::uint64_t shift) -> CARRIAGE_MOVE_STATUS
 {
     if (shift > this->GetCarriagePosition())
     {
@@ -81,7 +81,7 @@ auto kNOC_SMTP::Utils::FileInRAMStream:: MoveCarriageLeftBy(::std::uint64_t shif
 //- If we try to move the carriage too much left then
 // return CARRIAGE_MOVE_STATUS::REACH_RIGHT_DEAD_END
 // and place the carriage to the end
-auto kNOC_SMTP::Utils::FileInRAMStream:: MoveCarriageRightBy(::std::uint64_t shift) -> CARRIAGE_MOVE_STATUS
+auto kNOC_SMTP::Utils::StreamOfDataOnRAM:: MoveCarriageRightBy(::std::uint64_t shift) -> CARRIAGE_MOVE_STATUS
 {
     if (shift > this->GetDistanceFromCarriageToEnd())
     {
@@ -91,35 +91,39 @@ auto kNOC_SMTP::Utils::FileInRAMStream:: MoveCarriageRightBy(::std::uint64_t shi
 }
 
 
-auto kNOC_SMTP::Utils::FileInRAMStream:: GetCarriagePosition() -> ::std::uint64_t
+auto kNOC_SMTP::Utils::StreamOfDataOnRAM:: GetCarriagePosition() -> ::std::uint64_t
 {
     return this->carriage;
 }
 
 
-auto kNOC_SMTP::Utils::FileInRAMStream:: GetDistanceFromCarriageToEnd() -> ::std::uint64_t
+auto kNOC_SMTP::Utils::StreamOfDataOnRAM:: GetDistanceFromCarriageToEnd() -> ::std::uint64_t
 {
     return this->memory.size() - this->carriage;
 }
 
 
-auto kNOC_SMTP::Utils::FileInRAMStream:: ReadOneByteUnderCarriage() -> unsigned char
+auto kNOC_SMTP::Utils::StreamOfDataOnRAM:: ReadOneByteUnderCarriage() -> unsigned char
 {
     return this->memory[this->GetCarriagePosition()];
 }
 
 
-void kNOC_SMTP::Utils::FileInRAMStream:: WriteOneByteToTheEnd(unsigned char byte)
+void kNOC_SMTP::Utils::StreamOfDataOnRAM:: WriteOneByteToTheEnd(unsigned char byte)
 {
     this->memory[this->GetCarriagePosition()] = byte;
 }
 
 // Set all bytes to zero and place the carriage to the start
-void kNOC_SMTP::Utils::FileInRAMStream:: ZeroAllBytes()
+void kNOC_SMTP::Utils::StreamOfDataOnRAM:: ZeroAllBytes()
 { 
-    do{
+    this->PlaceCarriageToTheStart();
+
+    do {
         this->WriteOneByteOverByteUnderCarriage(0);
 
-    } while(this->MoveCarriageLeftBy(1) == CARRIAGE_MOVE_STATUS::OK);
+    }while (this->MoveCarriageRightBy(1) == CARRIAGE_MOVE_STATUS::OK);
+
+    this->PlaceCarriageToTheStart();
 }
 

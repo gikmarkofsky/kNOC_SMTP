@@ -13,7 +13,7 @@ namespace kNOC_SMTP::Utils
     };
 
     // Note: be aware, that you should move the "carriage" manually after reading/writing
-    class FileInRAMStream
+    class StreamOfDataOnRAM
     {
         //_________________________________PUBLIC__________________________________________
         public:

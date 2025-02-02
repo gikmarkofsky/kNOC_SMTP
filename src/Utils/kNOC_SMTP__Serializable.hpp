@@ -1,10 +1,13 @@
 
-#include "kNOC_SMTP__FileInRAMStream.hpp"
+#include "kNOC_SMTP__StreamOfDataOnRAM.hpp"
 
-class Serializable
+namespace kNOC_SMTP::Utils 
 {
-    //________________________________PUBLIC________________________________________
-    virtual void SerializeInto(kNOC_SMTP::Utils::FileInRAMStream) = 0;
-    virtual void DeserializeFrom(kNOC_SMTP::Utils::FileInRAMStream) = 0;
+    class Serializable
+    {
+        //________________________________PUBLIC________________________________________
+        virtual void SerializeInto(kNOC_SMTP::Utils::StreamOfDataOnRAM) = 0;
+        virtual void DeserializeFrom(kNOC_SMTP::Utils::StreamOfDataOnRAM) = 0;
 
-};
+    };
+}
