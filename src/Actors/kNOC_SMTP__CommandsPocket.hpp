@@ -1,18 +1,19 @@
+#pragma once
 
 #include <mutex>
 #include <queue>
 
-#include "../Utils/kNOC_SMTP__FileInRAMStream.hpp"
+#include "../Utils/kNOC_SMTP__StreamOfDataOnRAM.hpp"
 
 namespace kNOC_SMTP::Actors 
 {
     template <typename IncomeMessagesType, typename OutcomeMessagesType>
-    struct MailBox
+    struct CommandsPocket
     {
         ::std::mutex mutex;
         ::std::queue<IncomeMessagesType> incomeMessages;
-        ::std::queue<kNOC_SMTP::Utils::FileInRAMStream *> incomeDataStreams;
+        ::std::queue<kNOC_SMTP::Utils::StreamOfDataOnRAM *> incomeDataStreams;
         ::std::queue<OutcomeMessagesType> outcomeMessages;
-        ::std::queue<kNOC_SMTP::Utils::FileInRAMStream *> outcomeDataStreams;
+        ::std::queue<kNOC_SMTP::Utils::StreamOfDataOnRAM *> outcomeDataStreams;
     };
 }
