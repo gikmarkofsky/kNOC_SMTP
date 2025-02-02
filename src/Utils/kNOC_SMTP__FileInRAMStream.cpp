@@ -49,15 +49,18 @@ namespace kNOC_SMTP::Utils
 ___________________________________________________________________________________________
 */
 
+
 void kNOC_SMTP::Utils::FileInRAMStream:: PlaceCarriageToTheStart()
 {
     this->carriage = 0;
 }
 
+
 void kNOC_SMTP::Utils::FileInRAMStream:: PlaceCarriageToTheEnd()
 {
     this->carriage = this->memory.size();
 }
+
 
 auto kNOC_SMTP::Utils::FileInRAMStream:: MoveCarriageLeftBy(::std::uint64_t shift) -> CARRIAGE_MOVE_ERROR
 {
@@ -68,6 +71,7 @@ auto kNOC_SMTP::Utils::FileInRAMStream:: MoveCarriageLeftBy(::std::uint64_t shif
     }
 }
 
+
 auto kNOC_SMTP::Utils::FileInRAMStream:: MoveCarriageRightBy(::std::uint64_t shift) -> CARRIAGE_MOVE_ERROR
 {
     if (shift > this->carriage)
@@ -77,20 +81,24 @@ auto kNOC_SMTP::Utils::FileInRAMStream:: MoveCarriageRightBy(::std::uint64_t shi
     }
 }
 
+
 auto kNOC_SMTP::Utils::FileInRAMStream:: GetCarriagePosition() -> ::std::uint64_t
 {
     return this->carriage;
 }
+
 
 auto kNOC_SMTP::Utils::FileInRAMStream:: GetDistanceFromCarriageToEnd() -> ::std::uint64_t
 {
     return this->memory.size() - this->carriage;
 }
 
+
 auto kNOC_SMTP::Utils::FileInRAMStream:: ReadOneByteUnderCarriage() -> unsigned char
 {
     return this->memory[this->carriage];
 }
+
 
 void kNOC_SMTP::Utils::FileInRAMStream:: WriteOneByteToTheEnd(unsigned char byte)
 {
