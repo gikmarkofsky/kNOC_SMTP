@@ -1,25 +1,42 @@
 #pragma once
 
+#include <cstdint>
 namespace kNOC_SMTP::Actors
 {
-    //- Parent class for all actors.
-    // Constructor of children must receive an exemplar of MailBox class
-    // which one will store income/outcome commands in the future.
+//- Parent class for all actors.
+// Constructor of children must receive an exemplar of MailBox class
+// which one will store income/outcome commands in the future.
     class Actor
     {
-    //_________________________________PUBLIC__________________________________________
+//_________________________________PUBLIC___________________________________
     public:
-        int GetMaxTicksPerSecond();
-        void SetMaxTicksPerSecond(int maxTicks);
+        auto             
+        GetMaxTicksPerSecond
+        (void)
+        -> ::std::uint8_t;
 
-        void RunLoop();
+        auto
+        SetMaxTicksPerSecond
+        (int maxTicks)
+        -> void;
 
-    //_________________________________PROTECTED__________________________________________
+        auto
+        RunLoop
+        (void)
+        -> void;
+
+//_________________________________PROTECTED________________________________
     protected:
-        virtual bool PlayScenario() = 0;   
+        virtual auto    
+        PlayScenario
+        (void)
+        -> bool
+        = 0;   
 
-    //_________________________________PRIVATE__________________________________________
+//_________________________________PRIVATE__________________________________
     private:
-        int maxTicksPerSec = 1;
+        ::std::uint8_t
+        maxTicksPerSec
+        = 1;
     };
 }
